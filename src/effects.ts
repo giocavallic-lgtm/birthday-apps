@@ -4,6 +4,8 @@ export interface BurstOptions {
   count?: number
   hearts?: boolean
   tiny?: boolean
+  /** Fuego artificial: sube con estela y explota en el cielo. */
+  firework?: boolean
 }
 
 type Listener = (b: BurstOptions) => void

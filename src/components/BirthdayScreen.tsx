@@ -12,7 +12,10 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import Cake from './Cake'
+import Petals from './Petals'
+import Lantern from './Lantern'
 import { fireBurst } from '../effects'
+import { startMusic, toggleMusic } from '../music'
 
 interface Note {
   icon: LucideIcon
@@ -109,6 +112,11 @@ export default function BirthdayScreen() {
   const [letterOpen, setLetterOpen] = useState(false)
   const [wishShown, setWishShown] = useState(false)
   const [cakeKey, setCakeKey] = useState(0)
+  const [musicOn, setMusicOn] = useState(false)
+  const [wish, setWish] = useState('')
+  const [lanterns, setLanterns] = useState<{ id: number; text: string }[]>([])
+  const musicStarted = useRef(false)
+  const lanternId = useRef(0)
 
   // celebración al entrar
   useEffect(() => {
@@ -146,8 +154,60 @@ export default function BirthdayScreen() {
     setCakeKey((k) => k + 1)
   }
 
+  // la música empieza sola con el primer toque (el navegador lo exige así)
+  // y tocar el cielo lanza un fuego artificial
+  const onRootTap = (e: React.MouseEvent) => {
+    if (!musicStarted.current) {
+      musicStarted.current = true
+      setMusicOn(true)
+      startMusic()
+    }
+    const el = e.target as HTMLElement
+    if (!el.closest('button, input, a, textarea')) {
+      fireBurst({ x: e.clientX, y: e.clientY, firework: true })
+    }
+  }
+
+  const toggleMusicBtn = () => {
+    musicStarted.current = true
+    setMusicOn(toggleMusic())
+  }
+
+  const releaseLantern = () => {
+    const text = wish.trim().slice(0, 40) || '✨'
+    const id = ++lanternId.current
+    setLanterns((arr) => [...arr, { id, text }])
+    setWish('')
+    fireBurst({ x: window.innerWidth / 2, y: window.innerHeight * 0.8, hearts: true, count: 10 })
+  }
+
   return (
-    <div className="relative z-10 min-h-dvh flex flex-col items-center gap-8 sm:gap-16 px-4 py-10 sm:py-14 text-center">
+    <div
+      onClick={onRootTap}
+      className="relative z-10 min-h-dvh flex flex-col items-center gap-8 sm:gap-16 px-4 py-10 sm:py-14 text-center"
+    >
+      <Petals />
+      {lanterns.map((l) => (
+        <Lantern
+          key={l.id}
+          text={l.text}
+          onDone={() => setLanterns((arr) => arr.filter((x) => x.id !== l.id))}
+        />
+      ))}
+
+      {/* música */}
+      <button
+        onClick={toggleMusicBtn}
+        aria-label="Música de cajita"
+        className={`fixed top-3 right-3 z-[70] flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold backdrop-blur shadow-lg cursor-pointer ${
+          musicOn
+            ? 'border-amber-300/40 bg-amber-300/15 text-amber-200 animate-pulse-soft'
+            : 'border-white/15 bg-white/5 text-zinc-300'
+        }`}
+      >
+        <Music className="w-3.5 h-3.5" />
+        {musicOn ? 'Sonando ♫' : 'Música ♫'}
+      </button>
       {/* fecha */}
       <div className="card-enter flex items-center gap-2.5 rounded-full border border-rose-300/20 bg-rose-400/10 px-5 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-rose-200">
         11 · Noviembre
@@ -181,6 +241,31 @@ export default function BirthdayScreen() {
               Pide un deseo
             </p>
             <p className="font-hand text-xl text-zinc-300">…que se supone que se cumple 🌟</p>
+
+            {/* linterna del deseo */}
+            <div className="card-enter flex w-full max-w-md flex-col gap-2.5 px-2">
+              <div className="flex w-full items-center gap-2">
+                <input
+                  value={wish}
+                  onChange={(e) => setWish(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') releaseLantern()
+                  }}
+                  maxLength={40}
+                  placeholder="escribe tu deseo…"
+                  aria-label="Escribe tu deseo"
+                  className="min-w-0 flex-1 rounded-full border border-white/15 bg-white/10 backdrop-blur px-5 py-3 font-hand text-lg text-zinc-100 placeholder:text-zinc-500 outline-none focus:border-amber-300/40"
+                />
+                <button
+                  onClick={releaseLantern}
+                  className="shrink-0 rounded-full bg-gradient-to-r from-amber-300 to-orange-400 px-5 py-3 text-sm font-semibold text-amber-950 shadow-lg shadow-amber-500/20 transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+                >
+                  Soltar ✨
+                </button>
+              </div>
+              <p className="text-xs text-zinc-500">se suelta al cielo y se queda volando por ahí</p>
+            </div>
+
             <button
               onClick={relight}
               className="rounded-full border border-white/15 bg-white/10 px-5 py-2 text-sm text-zinc-200 backdrop-blur transition-transform hover:scale-105 cursor-pointer"

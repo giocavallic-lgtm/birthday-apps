@@ -4,6 +4,7 @@ import { onBurst } from '../effects'
 const COLORS = ['#f472b6', '#fb7185', '#7dd3fc', '#38bdf8', '#60a5fa', '#fbbf24', '#f9a8d4', '#fff1f2']
 const PINKS = ['#f472b6', '#fb7185', '#f9a8d4']
 const SPARKS = ['#fff1f2', '#f9a8d4', '#f472b6', '#fde68a', '#ffffff']
+const FW_COLORS = ['#fff7cc', '#fde68a', '#fbbf24', '#ffffff', '#7dd3fc', '#38bdf8', '#f9a8d4']
 
 interface Particle {
   x: number
@@ -79,6 +80,59 @@ export default function Effects() {
           })
         }
         particles = particles.slice(-700)
+        return
+      }
+
+      // fuego artificial: estela que sube y explota un poquito más arriba
+      if (b.firework) {
+        const fx = cx
+        const fy = cy
+        for (let i = 0; i < 12; i++) {
+          particles.push({
+            x: fx + (Math.random() - 0.5) * 4,
+            y: fy + Math.random() * 10,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: -(6 + Math.random() * 3),
+            size: 1.4 + Math.random() * 1.4,
+            color: Math.random() > 0.4 ? '#fff7cc' : '#fde68a',
+            rot: 0,
+            vr: 0,
+            shape: 'circle',
+            gravity: 0.26,
+            sway: 0,
+            phase: 0,
+            life: 0,
+            maxLife: 14 + Math.random() * 8,
+            rise: false,
+          })
+        }
+        const peak = Math.max(50, fy - (60 + Math.random() * 70))
+        window.setTimeout(() => {
+          const n = b.count ?? 90
+          const extra: Particle[] = []
+          for (let i = 0; i < n; i++) {
+            const ang = Math.random() * Math.PI * 2
+            const sp = 1.8 + Math.random() * 2.2
+            extra.push({
+              x: fx + (Math.random() - 0.5) * 4,
+              y: peak,
+              vx: Math.cos(ang) * sp,
+              vy: Math.sin(ang) * sp,
+              size: 2 + Math.random() * 2.2,
+              color: FW_COLORS[Math.floor(Math.random() * FW_COLORS.length)],
+              rot: 0,
+              vr: (Math.random() - 0.5) * 0.2,
+              shape: Math.random() < 0.16 ? 'heart' : 'circle',
+              gravity: 0.035,
+              sway: 0,
+              phase: 0,
+              life: 0,
+              maxLife: 55 + Math.random() * 30,
+              rise: false,
+            })
+          }
+          particles = particles.concat(extra).slice(-900)
+        }, 240)
         return
       }
 
