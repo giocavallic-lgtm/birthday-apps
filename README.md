@@ -1,15 +1,29 @@
-# 🎂 Birthday App
+# 💌 Birthday App
 
-Aplicación web de cumpleaños (11 de noviembre) hecha con React + Vite + Tailwind CSS.
+Aplicación web de cumpleaños (11 de noviembre) hecha con React + Vite + Tailwind CSS v4.
 
-## Características
+## Cómo funciona
 
-- Cuenta regresiva hasta el cumpleaños
-- Grid de mensajes afectivos con animación de aparición escalonada
-- Confeti al hacer clic en las tarjetas
-- Diseño oscuro con degradados y elementos flotantes
+La web está **sellada** hasta el 11 de noviembre a medianoche:
 
-## Cómo ejecutar
+- **Pantalla de acceso**: carta sellada con cuenta regresiva en vivo. Al tocar el sobre, tiembla y suelta corazones 💌
+- **El día del cumpleaños** se desbloquea sola:
+  - Celebración con confeti al entrar
+  - 🎂 Tarta interactiva: toca las velitas para apagarlas (con humito) y al apagar todas… pide un deseo ✨
+  - 💜 Notas románticas con corazones que revientan al tocarlas
+  - 💌 Carta escrita con efecto máquina de escribir (toca la carta para completarla al instante)
+
+> Añade `?preview` a la URL para forzar la vista de cumpleaños y comprobar cómo se verá.
+
+## Stack
+
+- React 19 + Vite 8
+- Tailwind CSS v4 (plugin `@tailwindcss/vite`)
+- lucide-react (iconos)
+- Fuentes: Great Vibes + Caveat (Google Fonts)
+- Confeti y corazones con canvas propio, sin dependencias extra
+
+## Desarrollo
 
 ```bash
 npm install
