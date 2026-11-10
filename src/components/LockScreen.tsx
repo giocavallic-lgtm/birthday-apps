@@ -1,6 +1,31 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Heart, Lock } from 'lucide-react'
 import { fireBurst } from '../effects'
+
+const WAIT_MESSAGES = [
+  'Cada segundo que pasa, esto está un poquito más cerca…',
+  'Detrás de este sello hay más de lo que imaginas 💜',
+  'Las mejores cosas se hacen esperar ✨',
+  'Hoy solo es la víspera. Mañana todo esto es tuyo 🎁',
+  'Este sobre guarda un pedacito de mi corazón 💌',
+  '¿Sientes curiosidad? Yo la sentí haciéndolo para ti 😉',
+  'Hay una tarta esperándote al otro lado 🎂',
+  'Casi casi… aguanta un poquito más 😌',
+  'Puedes tocar el sobre… pero no se va a abrir tan fácil 😏',
+  'Mañana, 11 de noviembre. No lo olvides 🌹',
+]
+
+const TAP_MESSAGES = [
+  '¡Eh! Todavía no es el día 💌',
+  'Nop. Sigue sellado 😌',
+  'Ay… la curiosidad te puede 😏',
+  'Menos un intento. Aguanta 💜',
+  '¿Otra vez? Qué impaciencia… 👀',
+  'El sello dice que ni lo intentes ✋',
+  'Casi casi… pero no 😌',
+]
+
+const MSG_MS = 4200
 
 function pad(n: number) {
   return String(n).padStart(2, '0')
@@ -9,16 +34,38 @@ function pad(n: number) {
 function Unit({ value, label }: { value: string; label: string }) {
   return (
     <div className="flex flex-col items-center gap-1">
-      <span className="text-3xl sm:text-4xl font-bold tabular-nums text-zinc-100">{value}</span>
+      <span
+        key={value}
+        className="digit-tick text-3xl sm:text-4xl font-bold tabular-nums text-zinc-100"
+      >
+        {value}
+      </span>
       <span className="text-[10px] uppercase tracking-[0.25em] text-zinc-400">{label}</span>
     </div>
   )
 }
 
 export default function LockScreen({ now, unlocksAt }: { now: Date; unlocksAt: Date }) {
+  const [msgIdx, setMsgIdx] = useState(() => Math.floor(Date.now() / MSG_MS) % WAIT_MESSAGES.length)
   const [shaking, setShaking] = useState(false)
-  const [toastKey, setToastKey] = useState(0)
-  const [toastVisible, setToastVisible] = useState(false)
+  const [toast, setToast] = useState<{ text: string; k: number } | null>(null)
+  const tapIdx = useRef(0)
+
+  // mensajes de espera rotativos
+  useEffect(() => {
+    const i = setInterval(
+      () => setMsgIdx((v) => (v + 1) % WAIT_MESSAGES.length),
+      MSG_MS,
+    )
+    return () => clearInterval(i)
+  }, [])
+
+  // auto-ocultar el toast
+  useEffect(() => {
+    if (!toast) return
+    const t = setTimeout(() => setToast(null), 2600)
+    return () => clearTimeout(t)
+  }, [toast])
 
   const diff = Math.max(0, unlocksAt.getTime() - now.getTime())
   const days = Math.floor(diff / 86400000)
@@ -26,19 +73,14 @@ export default function LockScreen({ now, unlocksAt }: { now: Date; unlocksAt: D
   const mins = Math.floor((diff % 3600000) / 60000)
   const secs = Math.floor((diff % 60000) / 1000)
 
-  useEffect(() => {
-    if (!toastVisible) return
-    const t = setTimeout(() => setToastVisible(false), 2600)
-    return () => clearTimeout(t)
-  }, [toastVisible, toastKey])
-
   const tap = (e: React.MouseEvent<HTMLButtonElement>) => {
     setShaking(true)
     setTimeout(() => setShaking(false), 600)
     const r = e.currentTarget.getBoundingClientRect()
     fireBurst({ x: r.left + r.width / 2, y: r.top + r.height / 3, hearts: true, count: 16 })
-    setToastKey((k) => k + 1)
-    setToastVisible(true)
+    const text = TAP_MESSAGES[tapIdx.current % TAP_MESSAGES.length]
+    tapIdx.current++
+    setToast({ text, k: Date.now() })
   }
 
   return (
@@ -57,13 +99,12 @@ export default function LockScreen({ now, unlocksAt }: { now: Date; unlocksAt: D
         Hay algo aquí para ti…
       </h1>
 
-      <p
-        className="card-enter max-w-md text-zinc-300/90 text-base sm:text-lg"
-        style={{ animationDelay: '240ms' }}
-      >
-        Pero aún está sellado. El acceso abre mañana,{' '}
-        <span className="text-rose-200 font-semibold">11 de noviembre</span>.
-      </p>
+      {/* mensaje de espera rotativo */}
+      <div className="h-16 flex items-center justify-center max-w-md">
+        <p key={msgIdx} className="msg-rotate font-hand text-2xl sm:text-3xl text-zinc-300/90">
+          {WAIT_MESSAGES[msgIdx]}
+        </p>
+      </div>
 
       {/* sobre */}
       <button
@@ -74,20 +115,22 @@ export default function LockScreen({ now, unlocksAt }: { now: Date; unlocksAt: D
         }`}
         style={{ animationDelay: '360ms' }}
       >
-        <div className="absolute -inset-10 rounded-full bg-pink-500/20 blur-3xl animate-pulse-soft" />
-        <div className="relative w-60 h-40 rounded-2xl bg-gradient-to-br from-rose-100 to-pink-200 shadow-2xl shadow-pink-950/50 overflow-hidden">
-          {/* solapa */}
-          <div
-            className="absolute inset-x-0 top-0 h-[55%] bg-gradient-to-br from-rose-300 to-pink-400"
-            style={{ clipPath: 'polygon(0 0, 100% 0, 50% 100%)' }}
-          />
-          <span className="absolute inset-x-0 top-[62%] flex justify-center font-hand text-2xl text-rose-500/80">
-            para ti
-          </span>
-        </div>
-        {/* sello de cera */}
-        <div className="seal-glow absolute left-1/2 top-[50%] -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-rose-700 flex items-center justify-center ring-4 ring-red-400/30">
-          <Heart className="w-5 h-5 text-rose-100" fill="currentColor" />
+        <div className="wiggle-occ">
+          <div className="absolute -inset-10 rounded-full bg-pink-500/20 blur-3xl animate-pulse-soft" />
+          <div className="relative w-60 h-40 rounded-2xl bg-gradient-to-br from-rose-100 to-pink-200 shadow-2xl shadow-pink-950/50 overflow-hidden">
+            {/* solapa */}
+            <div
+              className="absolute inset-x-0 top-0 h-[55%] bg-gradient-to-br from-rose-300 to-pink-400"
+              style={{ clipPath: 'polygon(0 0, 100% 0, 50% 100%)' }}
+            />
+            <span className="absolute inset-x-0 top-[62%] flex justify-center font-hand text-2xl text-rose-500/80">
+              para ti
+            </span>
+          </div>
+          {/* sello de cera */}
+          <div className="seal-glow absolute left-1/2 top-[50%] -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-rose-700 flex items-center justify-center ring-4 ring-red-400/30">
+            <Heart className="w-5 h-5 text-rose-100" fill="currentColor" />
+          </div>
         </div>
       </button>
 
@@ -102,17 +145,22 @@ export default function LockScreen({ now, unlocksAt }: { now: Date; unlocksAt: D
         <Unit value={pad(secs)} label="seg" />
       </div>
 
-      <p className="card-enter text-sm text-zinc-400" style={{ animationDelay: '600ms' }}>
-        Vuelve mañana y ábrela 💌
-      </p>
+      <div className="flex flex-col items-center gap-2">
+        <p className="card-enter text-sm text-zinc-400" style={{ animationDelay: '600ms' }}>
+          Vuelve mañana y ábrela 💌
+        </p>
+        <p className="card-enter text-xs text-zinc-500" style={{ animationDelay: '720ms' }}>
+          Psst… los corazones que flotan se pueden atrapar 👀💜
+        </p>
+      </div>
 
       {/* toast */}
-      {toastVisible && (
+      {toast && (
         <div
-          key={toastKey}
+          key={toast.k}
           className="card-enter fixed bottom-8 left-1/2 -translate-x-1/2 z-[80] rounded-full border border-white/15 bg-white/10 backdrop-blur px-5 py-2.5 text-sm text-zinc-100 shadow-xl"
         >
-          ¡Paciencia! 💌 Todavía no es el día…
+          {toast.text}
         </div>
       )}
     </div>

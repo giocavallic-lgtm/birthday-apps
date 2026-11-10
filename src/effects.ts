@@ -3,6 +3,7 @@ export interface BurstOptions {
   y?: number
   count?: number
   hearts?: boolean
+  tiny?: boolean
 }
 
 type Listener = (b: BurstOptions) => void

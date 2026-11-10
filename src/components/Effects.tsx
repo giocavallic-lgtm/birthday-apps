@@ -3,6 +3,7 @@ import { onBurst } from '../effects'
 
 const COLORS = ['#f472b6', '#fb7185', '#c084fc', '#a78bfa', '#60a5fa', '#fbbf24', '#f9a8d4', '#fff1f2']
 const PINKS = ['#f472b6', '#fb7185', '#f9a8d4']
+const SPARKS = ['#fff1f2', '#f9a8d4', '#f472b6', '#fde68a', '#ffffff']
 
 interface Particle {
   x: number
@@ -52,6 +53,32 @@ export default function Effects() {
     window.addEventListener('resize', resize)
 
     const off = onBurst((b) => {
+      // Chispitas diminutas para el rastro del cursor
+      if (b.tiny) {
+        const count = b.count ?? 2
+        for (let i = 0; i < count; i++) {
+          particles.push({
+            x: cx + (Math.random() - 0.5) * 8,
+            y: cy + (Math.random() - 0.5) * 8,
+            vx: (Math.random() - 0.5) * 0.7,
+            vy: -0.2 - Math.random() * 0.5,
+            size: 1.8 + Math.random() * 2.6,
+            color: SPARKS[Math.floor(Math.random() * SPARKS.length)],
+            rot: 0,
+            vr: 0,
+            shape: Math.random() > 0.55 ? 'circle' : 'heart',
+            gravity: -0.004,
+            sway: 0.15,
+            phase: Math.random() * Math.PI * 2,
+            life: 0,
+            maxLife: 38 + Math.random() * 22,
+            rise: true,
+          })
+        }
+        particles = particles.slice(-700)
+        return
+      }
+
       const count = b.count ?? (b.hearts ? 14 : 160)
       const cx = b.x ?? window.innerWidth / 2
       const cy = b.y ?? window.innerHeight * 0.35

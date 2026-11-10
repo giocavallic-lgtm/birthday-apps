@@ -190,3 +190,147 @@ body {
   vertical-align: -0.15em;
   animation: caretBlink 1s steps(1) infinite;
 }
+
+/* ============ Espera: mensajes rotativos ============ */
+
+@keyframes msgCycle {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  14%,
+  80% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.msg-rotate {
+  animation: msgCycle 4.2s ease-in-out forwards;
+}
+
+/* ============ Dígitos que saltan al cambiar ============ */
+
+@keyframes digitTick {
+  0% {
+    transform: translateY(-7px) scale(1.12);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.digit-tick {
+  display: inline-block;
+  animation: digitTick 0.32s ease-out;
+}
+
+/* ============ Corazones atrapables ============ */
+
+@keyframes bubbleRise {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  82% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-118vh);
+    opacity: 0;
+  }
+}
+
+@keyframes swayX {
+  from {
+    transform: translateX(-16px);
+  }
+  to {
+    transform: translateX(16px);
+  }
+}
+
+/* ============ Estrellas ============ */
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.12;
+    transform: scale(0.75);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.1);
+  }
+}
+
+.twinkle {
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes shoot {
+  0% {
+    transform: translate(0, 0) rotate(-33deg);
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  16% {
+    transform: translate(-44vw, 30vh) rotate(-33deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-44vw, 30vh) rotate(-33deg);
+    opacity: 0;
+  }
+}
+
+.shooting-star {
+  animation: shoot 11s linear infinite;
+}
+
+/* ============ Parallax con el cursor ============ */
+
+.parallax {
+  transform: translate(calc(var(--mx, 0) * 26px), calc(var(--my, 0) * 20px));
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ============ Sobre que se mueve solo de vez en cuando ============ */
+
+@keyframes wiggleOcc {
+  0%,
+  71%,
+  100% {
+    transform: rotate(0deg);
+  }
+  73% {
+    transform: rotate(-2.4deg);
+  }
+  75% {
+    transform: rotate(2.4deg);
+  }
+  77% {
+    transform: rotate(-1.8deg);
+  }
+  79% {
+    transform: rotate(1.2deg);
+  }
+  81% {
+    transform: rotate(0deg);
+  }
+}
+
+.wiggle-occ {
+  animation: wiggleOcc 9s ease-in-out infinite;
+}
