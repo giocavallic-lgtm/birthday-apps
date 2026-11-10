@@ -12,6 +12,19 @@ body {
 
 body {
   background: #17101f;
+  overscroll-behavior-y: contain;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Móvil: sin destello al tocar, sin zoom por doble toque, sin selección al mantener pulsado */
+button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 /* ============ Animaciones ============ */

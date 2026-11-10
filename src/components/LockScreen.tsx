@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { Heart, Lock } from 'lucide-react'
 import { fireBurst } from '../effects'
+import Secrets from './Secrets'
 
 const WAIT_MESSAGES = [
   'Cada segundo que pasa, esto está un poquito más cerca…',
-  'Detrás de este sello hay más de lo que imaginas 💜',
+  'Detrás de este sello hay más de lo que imaginas 💙',
   'Las mejores cosas se hacen esperar ✨',
   'Hoy solo es la víspera. Mañana todo esto es tuyo 🎁',
   'Este sobre guarda un pedacito de mi corazón 💌',
@@ -13,13 +14,15 @@ const WAIT_MESSAGES = [
   'Casi casi… aguanta un poquito más 😌',
   'Puedes tocar el sobre… pero no se va a abrir tan fácil 😏',
   'Mañana, 11 de noviembre. No lo olvides 🌹',
+  'Cositas escondidas hay por aquí… mira bien por los lados 👀',
+  'Quien busca con curiosidad, encuentra secretitos ✨',
 ]
 
 const TAP_MESSAGES = [
   '¡Eh! Todavía no es el día 💌',
   'Nop. Sigue sellado 😌',
   'Ay… la curiosidad te puede 😏',
-  'Menos un intento. Aguanta 💜',
+  'Menos un intento. Aguanta 💙',
   '¿Otra vez? Qué impaciencia… 👀',
   'El sello dice que ni lo intentes ✋',
   'Casi casi… pero no 😌',
@@ -84,7 +87,8 @@ export default function LockScreen({ now, unlocksAt }: { now: Date; unlocksAt: D
   }
 
   return (
-    <div className="relative z-10 min-h-screen flex flex-col items-center justify-center gap-8 sm:gap-10 px-4 py-14 text-center">
+    <div className="relative z-10 min-h-dvh flex flex-col items-center justify-center gap-6 sm:gap-10 px-4 py-10 sm:py-14 text-center">
+      <Secrets />
       {/* badge */}
       <div className="card-enter flex items-center gap-2 rounded-full border border-rose-300/20 bg-rose-400/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.28em] text-rose-200">
         <Lock className="w-3.5 h-3.5" />
@@ -93,15 +97,15 @@ export default function LockScreen({ now, unlocksAt }: { now: Date; unlocksAt: D
 
       {/* título */}
       <h1
-        className="card-enter font-script text-6xl sm:text-7xl md:text-8xl leading-tight bg-gradient-to-r from-rose-300 via-pink-300 to-purple-300 bg-clip-text text-transparent drop-shadow-lg"
+        className="card-enter font-script text-5xl sm:text-7xl md:text-8xl leading-tight bg-gradient-to-r from-rose-300 via-pink-300 to-purple-300 bg-clip-text text-transparent drop-shadow-lg"
         style={{ animationDelay: '120ms' }}
       >
         Hay algo aquí para ti…
       </h1>
 
       {/* mensaje de espera rotativo */}
-      <div className="h-16 flex items-center justify-center max-w-md">
-        <p key={msgIdx} className="msg-rotate font-hand text-2xl sm:text-3xl text-zinc-300/90">
+      <div className="min-h-16 sm:min-h-20 flex items-center justify-center max-w-md">
+        <p key={msgIdx} className="msg-rotate font-hand text-xl sm:text-3xl text-zinc-300/90">
           {WAIT_MESSAGES[msgIdx]}
         </p>
       </div>
@@ -136,7 +140,7 @@ export default function LockScreen({ now, unlocksAt }: { now: Date; unlocksAt: D
 
       {/* cuenta regresiva */}
       <div
-        className="card-enter flex items-stretch gap-4 sm:gap-7 rounded-3xl border border-white/10 bg-white/5 backdrop-blur px-6 sm:px-8 py-5 shadow-2xl"
+        className="card-enter flex items-stretch gap-3 sm:gap-7 rounded-3xl border border-white/10 bg-white/5 backdrop-blur px-5 sm:px-8 py-5 shadow-2xl"
         style={{ animationDelay: '480ms' }}
       >
         {days > 0 && <Unit value={String(days)} label="días" />}
@@ -150,7 +154,7 @@ export default function LockScreen({ now, unlocksAt }: { now: Date; unlocksAt: D
           Vuelve mañana y ábrela 💌
         </p>
         <p className="card-enter text-xs text-zinc-500" style={{ animationDelay: '720ms' }}>
-          Psst… los corazones que flotan se pueden atrapar 👀💜
+          Psst… los corazones que flotan se pueden atrapar 👀💙
         </p>
       </div>
 
@@ -158,7 +162,7 @@ export default function LockScreen({ now, unlocksAt }: { now: Date; unlocksAt: D
       {toast && (
         <div
           key={toast.k}
-          className="card-enter fixed bottom-8 left-1/2 -translate-x-1/2 z-[80] rounded-full border border-white/15 bg-white/10 backdrop-blur px-5 py-2.5 text-sm text-zinc-100 shadow-xl"
+          className="card-enter fixed bottom-28 left-1/2 -translate-x-1/2 z-[80] max-w-[86vw] text-center rounded-full border border-white/15 bg-white/10 backdrop-blur px-5 py-2.5 text-sm text-zinc-100 shadow-xl"
         >
           {toast.text}
         </div>

@@ -61,8 +61,8 @@ export default function PopField({ onCollect }: { onCollect: (points: number) =>
         const item: PopItem = {
           id: ++idRef.current,
           kind,
-          x: 6 + Math.random() * 88,
-          size: (26 + Math.random() * 14) + (kind === 'gold' ? 10 : 0),
+          x: 5 + Math.random() * 78,
+          size: (32 + Math.random() * 14) + (kind === 'gold' ? 12 : 0),
           dur: 8 + Math.random() * 3.5,
           swayDur: 2.2 + Math.random() * 1.6,
         }
@@ -108,7 +108,7 @@ export default function PopField({ onCollect }: { onCollect: (points: number) =>
             key={item.id}
             onClick={(e) => pop(item, e)}
             aria-label={`Atrapar ${item.kind === 'gold' ? 'el corazón dorado' : 'un corazón'}`}
-            className="pointer-events-auto group absolute bottom-[-60px] cursor-pointer bg-transparent border-0 p-0"
+            className="pointer-events-auto group absolute bottom-[-60px] cursor-pointer bg-transparent border-0 p-0 select-none before:absolute before:-inset-3 before:content-['']"
             style={{
               left: `${item.x}%`,
               width: item.size,

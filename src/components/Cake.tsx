@@ -27,7 +27,7 @@ function Candle({
     <button
       onClick={onBlow}
       aria-label={`Vela ${index + 1}`}
-      className="relative group cursor-pointer bg-transparent border-0 p-0"
+      className="relative group cursor-pointer bg-transparent border-0 p-0 before:absolute before:-left-3 before:-right-3 before:-top-7 before:bottom-0 before:content-['']"
     >
       {/* llama */}
       {lit && (
@@ -84,7 +84,7 @@ export default function Cake({ onAllOut }: { onAllOut: () => void }) {
   return (
     <div className="relative flex flex-col items-center select-none">
       {/* velitas */}
-      <div className="flex items-end gap-7 -mb-1.5 relative z-10">
+      <div className="flex items-end gap-4 sm:gap-7 -mb-1.5 relative z-10">
         {lit.map((isLit, i) => (
           <Candle key={i} index={i} lit={isLit} onBlow={blow(i)} />
         ))}

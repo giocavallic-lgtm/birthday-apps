@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { onBurst } from '../effects'
 
-const COLORS = ['#f472b6', '#fb7185', '#c084fc', '#a78bfa', '#60a5fa', '#fbbf24', '#f9a8d4', '#fff1f2']
+const COLORS = ['#f472b6', '#fb7185', '#7dd3fc', '#38bdf8', '#60a5fa', '#fbbf24', '#f9a8d4', '#fff1f2']
 const PINKS = ['#f472b6', '#fb7185', '#f9a8d4']
 const SPARKS = ['#fff1f2', '#f9a8d4', '#f472b6', '#fde68a', '#ffffff']
 
@@ -53,6 +53,9 @@ export default function Effects() {
     window.addEventListener('resize', resize)
 
     const off = onBurst((b) => {
+      const cx = b.x ?? window.innerWidth / 2
+      const cy = b.y ?? window.innerHeight * 0.35
+
       // Chispitas diminutas para el rastro del cursor
       if (b.tiny) {
         const count = b.count ?? 2
@@ -80,8 +83,6 @@ export default function Effects() {
       }
 
       const count = b.count ?? (b.hearts ? 14 : 160)
-      const cx = b.x ?? window.innerWidth / 2
-      const cy = b.y ?? window.innerHeight * 0.35
       const extra: Particle[] = []
 
       for (let i = 0; i < count; i++) {

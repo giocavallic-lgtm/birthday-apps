@@ -58,7 +58,7 @@ export default function App() {
   const unlocked = preview || isBirthday(now)
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-[#17101f] via-[#221531] to-[#2e1a3f] text-zinc-100 font-sans">
+    <div className="relative min-h-dvh overflow-hidden bg-gradient-to-b from-[#17101f] via-[#221531] to-[#2e1a3f] text-zinc-100 font-sans">
       <Backdrop />
       <Effects />
       <SparkleTrail />
@@ -68,7 +68,7 @@ export default function App() {
       {/* contador de corazones atrapados */}
       <div
         aria-label="Corazones atrapados"
-        className="fixed bottom-4 right-4 z-[65] flex items-center gap-1.5 rounded-full border border-pink-300/25 bg-pink-400/10 backdrop-blur px-3.5 py-1.5 text-sm font-semibold text-pink-200 shadow-lg"
+        className="fixed bottom-[calc(1rem_+_env(safe-area-inset-bottom))] right-4 z-[65] flex items-center gap-1.5 rounded-full border border-pink-300/25 bg-pink-400/10 backdrop-blur px-3.5 py-1.5 text-sm font-semibold text-pink-200 shadow-lg"
       >
         <Heart className="w-4 h-4 text-pink-400" fill="currentColor" />
         <span key={collected} className="digit-tick tabular-nums">
@@ -80,7 +80,7 @@ export default function App() {
       {milestone && (
         <div
           key={milestone.k}
-          className="card-enter fixed bottom-16 left-1/2 -translate-x-1/2 z-[80] rounded-full border border-pink-300/30 bg-pink-400/15 backdrop-blur px-5 py-2.5 text-sm text-pink-100 shadow-xl"
+          className="card-enter fixed bottom-16 left-1/2 -translate-x-1/2 z-[80] max-w-[86vw] text-center rounded-full border border-pink-300/30 bg-pink-400/15 backdrop-blur px-5 py-2.5 text-sm text-pink-100 shadow-xl"
         >
           {milestone.text}
         </div>

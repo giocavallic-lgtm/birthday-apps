@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Heart,
   Sparkles,
@@ -42,6 +42,7 @@ Que este año te traiga risas, calma y todo lo que sueñas. Feliz cumpleaños.`
 
 function Letter({ onClose }: { onClose: () => void }) {
   const [chars, setChars] = useState(0)
+  const paperRef = useRef<HTMLDivElement>(null)
   const done = chars >= LETTER.length
 
   useEffect(() => {
@@ -50,13 +51,20 @@ function Letter({ onClose }: { onClose: () => void }) {
     return () => clearTimeout(t)
   }, [chars, done])
 
+  // en pantallas pequeñas, sigue el texto mientras se escribe
+  useEffect(() => {
+    const el = paperRef.current
+    if (el) el.scrollTop = el.scrollHeight
+  }, [chars])
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
-        className="card-enter relative w-full max-w-lg rounded-3xl border border-amber-100/60 bg-[#fdf8ee] p-7 sm:p-9 shadow-2xl cursor-pointer"
+        ref={paperRef}
+        className="card-enter relative w-full max-w-lg max-h-[85dvh] overflow-y-auto rounded-3xl border border-amber-100/60 bg-[#fdf8ee] p-6 sm:p-9 shadow-2xl cursor-pointer"
         onClick={(e) => {
           e.stopPropagation()
           setChars(LETTER.length)
@@ -139,7 +147,7 @@ export default function BirthdayScreen() {
   }
 
   return (
-    <div className="relative z-10 min-h-screen flex flex-col items-center gap-12 sm:gap-16 px-4 py-14 text-center">
+    <div className="relative z-10 min-h-dvh flex flex-col items-center gap-8 sm:gap-16 px-4 py-10 sm:py-14 text-center">
       {/* fecha */}
       <div className="card-enter flex items-center gap-2.5 rounded-full border border-rose-300/20 bg-rose-400/10 px-5 py-1.5 text-xs font-semibold uppercase tracking-[0.3em] text-rose-200">
         11 · Noviembre
@@ -147,11 +155,11 @@ export default function BirthdayScreen() {
 
       {/* título */}
       <div className="card-enter" style={{ animationDelay: '120ms' }}>
-        <h1 className="font-script text-7xl sm:text-8xl md:text-9xl leading-tight bg-gradient-to-r from-rose-300 via-pink-300 to-purple-300 bg-clip-text text-transparent drop-shadow-lg">
+        <h1 className="font-script text-6xl sm:text-8xl md:text-9xl leading-tight bg-gradient-to-r from-rose-300 via-pink-300 to-purple-300 bg-clip-text text-transparent drop-shadow-lg">
           Feliz Cumpleaños
         </h1>
         <p className="mt-3 text-zinc-300/90 text-base sm:text-lg">
-          Hoy el mundo celebra que existes 💜
+          Hoy el mundo celebra que existes 💙
         </p>
       </div>
 
