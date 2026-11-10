@@ -76,7 +76,7 @@ function Letter({ onClose }: { onClose: () => void }) {
 
         {done && (
           <p className="mt-6 text-right font-hand text-2xl text-rose-500">
-            con todo mi corazón 💜
+            con todo mi corazón 💙
           </p>
         )}
 
