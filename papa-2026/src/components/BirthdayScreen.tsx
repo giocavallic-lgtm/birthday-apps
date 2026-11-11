@@ -4,6 +4,7 @@ import Cake from './Cake'
 import Serpentinas from './Serpentinas'
 import PaniniCards from './PaniniCards'
 import Scoreboard from './Scoreboard'
+import TreasureHunt from './TreasureHunt'
 import { fireBurst } from '../effects'
 import { startMusic, toggleMusic } from '../music'
 
@@ -96,6 +97,14 @@ export default function BirthdayScreen() {
   const [musicOn, setMusicOn] = useState(false)
   const [wish, setWish] = useState('')
   const [led, setLed] = useState({ text: DEFAULT_LED, k: 0 })
+  const [huntOpen, setHuntOpen] = useState(false)
+  const [huntDone, setHuntDone] = useState(() => {
+    try {
+      return localStorage.getItem('papa-hunt-done') === '1'
+    } catch {
+      return false
+    }
+  })
   const musicStarted = useRef(false)
   const ledTimer = useRef<number | null>(null)
 
@@ -254,6 +263,25 @@ export default function BirthdayScreen() {
         )}
       </section>
 
+      {/* búsqueda del tesoro */}
+      <section className="card-enter w-full max-w-lg" style={{ animationDelay: '1s' }}>
+        <button
+          onClick={() => {
+            setHuntOpen(true)
+            fireBurst({ hearts: true, count: 20, y: window.innerHeight * 0.5 })
+          }}
+          className="group w-full rounded-full bg-gradient-to-r from-amber-400 to-yellow-600 hover:from-amber-300 hover:to-yellow-500 px-8 py-4 font-semibold text-lg text-amber-950 shadow-xl shadow-amber-500/25 transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer"
+        >
+          <span className="inline-flex items-center gap-2.5">
+            <span className="text-xl transition-transform group-hover:-translate-y-0.5">🗺️</span>
+            {huntDone ? 'Tesoro encontrado 🏆' : 'La búsqueda del tesoro'}
+          </span>
+        </button>
+        <p className="mt-2.5 text-xs text-zinc-400">
+          (6 pistas por toda la casa… y ojo con las trampas 🟨)
+        </p>
+      </section>
+
       {/* figuritas */}
       <PaniniCards />
 
@@ -276,6 +304,13 @@ export default function BirthdayScreen() {
       <p className="text-sm text-zinc-400 pb-4">Hecho de hijo a padre, con todo el corazón ⚽💙</p>
 
       {letterOpen && <Letter onClose={() => setLetterOpen(false)} />}
+
+      {huntOpen && (
+        <TreasureHunt
+          onDone={() => setHuntDone(true)}
+          onClose={() => setHuntOpen(false)}
+        />
+      )}
     </div>
   )
 }
