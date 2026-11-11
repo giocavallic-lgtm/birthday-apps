@@ -1,40 +1,28 @@
-# 💌 Birthday App
+# 🎂 birthday-apps
 
-Aplicación web de cumpleaños (11 de noviembre) hecha con React + Vite + Tailwind CSS v4.
+Todas las webs de cumpleaños en un solo repo: **una carpeta por persona y año**.
 
-## Cómo funciona
+| Carpeta | Para | Cuándo | Enlace |
+|---|---|---|---|
+| [`neree-2026/`](./neree-2026) | Neree | 11 de noviembre de 2026 | https://giocavallic-lgtm.github.io/birthday-apps/neree-2026/ |
 
-La web está **sellada** hasta el 11 de noviembre a medianoche:
+## Cómo está montado
 
-- **Pantalla de acceso**: carta sellada con cuenta regresiva en vivo. Al tocar el sobre, tiembla y suelta corazones 💌
-- **Mensajes de espera rotativos** que cambian cada pocos segundos mientras esperas el día
-- **Mini-juego**: corazones, estrellas y regalitos flotan por la pantalla… ¡atrápalos! Hay un corazón dorado que vale 5 💛 y logros al llegar a 10, 25, 50 y 100
-- **Pantalla viva**: estrellas titilantes, estrellas fugaces, blobs con parallax que siguen el cursor y chispitas que dejas al mover el dedo/ratón
-- **El día del cumpleaños** se desbloquea sola:
-  - Celebración con confeti al entrar
-  - 🎂 Tarta interactiva: toca las velitas para apagarlas (con humito) y al apagar todas… pide un deseo ✨
-  - 💜 Notas románticas con corazones que revientan al tocarlas
-  - 💌 Carta escrita con efecto máquina de escribir (toca la carta para completarla al instante)
+- Cada carpeta (`neree-2026/`, y las que vengan) es una app independiente de **React + Vite + Tailwind**.
+- El **código** vive en la rama `main`.
+- El **deploy** vive en la rama `gh-pages`, con cada app compilada dentro de una carpeta con su mismo nombre.
 
-> Añade `?preview` a la URL para forzar la vista de cumpleaños y comprobar cómo se verá.
+## Añadir una app nueva
 
-## Stack
+1. Crea una carpeta `nombre-año/` con la app dentro.
+2. Dentro de la carpeta: `npm install` y `npm run build`.
+3. Copia el contenido de `dist/` a la rama `gh-pages`, dentro de `nombre-año/`.
+4. Haz push de ambas ramas y listo.
 
-- React 19 + Vite 8
-- Tailwind CSS v4 (plugin `@tailwindcss/vite`)
-- lucide-react (iconos)
-- Fuentes: Great Vibes + Caveat (Google Fonts)
-- Confeti y corazones con canvas propio, sin dependencias extra
-
-## Desarrollo
+## Desarrollar
 
 ```bash
+cd neree-2026
 npm install
 npm run dev
-```
-
-## Build para producción
-
-```bash
-npm run build
 ```
