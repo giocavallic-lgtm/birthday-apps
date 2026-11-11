@@ -5,6 +5,7 @@ Todas las webs de cumpleaños en un solo repo: **una carpeta por persona y año*
 | Carpeta | Para | Cuándo | Enlace |
 |---|---|---|---|
 | [`nerea-2026/`](./nerea-2026) | Nerea | 11 de noviembre de 2026 | https://giocavallic-lgtm.github.io/birthday-apps/nerea-2026/ |
+| [`papa-2026/`](./papa-2026) | Papá ⚽ | 12 de noviembre de 2026 | https://giocavallic-lgtm.github.io/birthday-apps/papa-2026/ |
 
 ## Cómo está montado
 

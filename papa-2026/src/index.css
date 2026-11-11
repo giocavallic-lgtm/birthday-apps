@@ -1,0 +1,454 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Bebas Neue", "Arial Narrow", sans-serif;
+  --font-hand: "Caveat", "Segoe Script", cursive;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: #071521;
+  overscroll-behavior-y: contain;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Móvil: sin destello al tocar, sin zoom por doble toque, sin selección al mantener pulsado */
+button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ============ Animaciones ============ */
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-26px) scale(1.04);
+  }
+}
+
+@keyframes float2 {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(24px, -34px);
+  }
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseSoft {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+@keyframes heartUp {
+  0% {
+    transform: translateY(0) scale(0.6) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.5;
+  }
+  90% {
+    opacity: 0.15;
+  }
+  100% {
+    transform: translateY(-105vh) scale(1.1) rotate(22deg);
+    opacity: 0;
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0);
+  }
+  20% {
+    transform: translateX(-9px) rotate(-3deg);
+  }
+  40% {
+    transform: translateX(8px) rotate(3deg);
+  }
+  60% {
+    transform: translateX(-6px) rotate(-2deg);
+  }
+  80% {
+    transform: translateX(4px) rotate(1deg);
+  }
+}
+
+@keyframes flameFlicker {
+  0%,
+  100% {
+    transform: translateX(-50%) scale(1) rotate(-2deg);
+  }
+  25% {
+    transform: translateX(-50%) scale(1.08, 0.94) rotate(2deg);
+  }
+  50% {
+    transform: translateX(-50%) scale(0.94, 1.1);
+  }
+  75% {
+    transform: translateX(-50%) scale(1.05, 0.96) rotate(-1deg);
+  }
+}
+
+@keyframes smokeUp {
+  0% {
+    transform: translate(-50%, 0) scale(0.5);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -30px) scale(1.7);
+    opacity: 0;
+  }
+}
+
+@keyframes glowPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 24px 8px rgba(56, 189, 248, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 44px 16px rgba(56, 189, 248, 0.6);
+  }
+}
+
+@keyframes caretBlink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ============ Clases ============ */
+
+.animate-float {
+  animation: float 7s ease-in-out infinite;
+}
+
+.animate-float-2 {
+  animation: float2 10s ease-in-out infinite;
+}
+
+.animate-pulse-soft {
+  animation: pulseSoft 4s ease-in-out infinite;
+}
+
+.card-enter {
+  opacity: 0;
+  animation: cardIn 0.7s ease-out forwards;
+}
+
+.heart-float {
+  animation: heartUp linear infinite;
+}
+
+.shake {
+  animation: shake 0.55s ease-in-out;
+}
+
+.flame {
+  animation: flameFlicker 0.9s ease-in-out infinite;
+  transform-origin: 50% 100%;
+}
+
+.smoke {
+  animation: smokeUp 1.3s ease-out forwards;
+}
+
+.seal-glow {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: currentColor;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  animation: caretBlink 1s steps(1) infinite;
+}
+
+/* ============ Espera: mensajes rotativos ============ */
+
+@keyframes msgCycle {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  14%,
+  80% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.msg-rotate {
+  animation: msgCycle 4.2s ease-in-out forwards;
+}
+
+/* ============ Dígitos que saltan al cambiar ============ */
+
+@keyframes digitTick {
+  0% {
+    transform: translateY(-7px) scale(1.12);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.digit-tick {
+  display: inline-block;
+  animation: digitTick 0.32s ease-out;
+}
+
+/* ============ Pelotitas atrapables ============ */
+
+@keyframes bubbleRise {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  82% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-118vh);
+    opacity: 0;
+  }
+}
+
+@keyframes swayX {
+  from {
+    transform: translateX(-16px);
+  }
+  to {
+    transform: translateX(16px);
+  }
+}
+
+/* ============ Estrellas ============ */
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.12;
+    transform: scale(0.75);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.1);
+  }
+}
+
+.twinkle {
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+@keyframes shoot {
+  0% {
+    transform: translate(0, 0) rotate(-33deg);
+    opacity: 0;
+  }
+  4% {
+    opacity: 1;
+  }
+  16% {
+    transform: translate(-44vw, 30vh) rotate(-33deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-44vw, 30vh) rotate(-33deg);
+    opacity: 0;
+  }
+}
+
+.shooting-star {
+  animation: shoot 11s linear infinite;
+}
+
+/* ============ Parallax con el cursor ============ */
+
+.parallax {
+  transform: translate(calc(var(--mx, 0) * 26px), calc(var(--my, 0) * 20px));
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ============ La pelota del sello se menea sola ============ */
+
+@keyframes wiggleOcc {
+  0%,
+  71%,
+  100% {
+    transform: rotate(0deg);
+  }
+  73% {
+    transform: rotate(-2.4deg);
+  }
+  75% {
+    transform: rotate(2.4deg);
+  }
+  77% {
+    transform: rotate(-1.8deg);
+  }
+  79% {
+    transform: rotate(1.2deg);
+  }
+  81% {
+    transform: rotate(0deg);
+  }
+}
+
+.wiggle-occ {
+  animation: wiggleOcc 9s ease-in-out infinite;
+}
+
+/* ============ Pelota que gira al tocarla ============ */
+
+@keyframes spinBall {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  55% {
+    transform: rotate(-330deg) scale(0.92);
+  }
+  100% {
+    transform: rotate(-360deg) scale(1);
+  }
+}
+
+.ball-kick {
+  animation: spinBall 0.65s cubic-bezier(0.34, 0.68, 0.34, 1);
+}
+
+/* ============ Serpentinas que caen ============ */
+
+@keyframes petalFall {
+  0% {
+    transform: translateY(-5vh) rotate(0deg);
+  }
+  100% {
+    transform: translateY(110vh) rotate(320deg);
+  }
+}
+
+/* ============ Videomarcador LED ============ */
+
+@keyframes ledScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-25%);
+  }
+}
+
+.led-scroll {
+  animation: ledScroll 16s linear infinite;
+  color: #fcd34d;
+  text-shadow:
+    0 0 10px rgba(252, 211, 77, 0.9),
+    0 0 24px rgba(252, 211, 77, 0.45);
+}
+
+/* ============ ¡GOOOOL! ============ */
+
+@keyframes goalPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  18% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+  30% {
+    transform: scale(1);
+  }
+  78% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+}
+
+.goal-pop {
+  animation: goalPop 1.4s ease-out forwards;
+}
+
+/* ============ Cartitas Panini que se voltean ============ */
+
+.flip-card {
+  perspective: 900px;
+}
+
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.flip-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flip-back {
+  transform: rotateY(180deg);
+}
