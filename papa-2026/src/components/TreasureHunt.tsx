@@ -47,7 +47,7 @@ y el microondas saca el entretiempo.
         joke: '¿A mirar la tele tan temprano? 😌 La pista habla de frío y entretiempo… pensá, pensá.',
       },
     ],
-    success: `¡Parada 1 conseguida! 🥶 La cancha de la heladera y el microondas. Que arranque la siguiente jugada…`,
+    success: `¿Fuiste a la heladera pensando que el regalo estaba ahí? 😏 Frío, frío, papá. Acá solo hay comida. Regalo encontrado: ninguno.`,
   },
   {
     trail: '🛋️ Salón',
@@ -76,7 +76,7 @@ y se celebra con control remoto en mano.
         joke: '¿A dormir? ¡Ni en tus sueños! 😂 La pista habla de sillones, no de sábanas.',
       },
     ],
-    success: `¡Parada 2! 📺 La cancha donde más partidos se vieron en esta casa, alentando desde el sillón.`,
+    success: `¿Levantaste los almohadones del sofá? 🤣 ¡No está! Igual vas haciendo un lindo recorrido, capitán.`,
   },
   {
     trail: '🚪 Pasillo',
@@ -105,7 +105,7 @@ pero nadie lo pone nunca en la formación.
         joke: '',
       },
     ],
-    success: `¡Parada 3! 🚪 El pasillo: el mediocampista de la casa. Conecta todo y casi nunca lo nominan para el premio.`,
+    success: `Buen pase por el mediocampo… pero el regalo no corre por acá. (¿Ya miraste el baño otra vez? Es broma. No lo mires.)`,
   },
   {
     trail: '🦁 Cuarto de Leo',
@@ -134,7 +134,7 @@ el crack que todavía entrena la gambeta.
         joke: '',
       },
     ],
-    success: `¡Parada 4! 🦁 El vestuario de Leo. En esa habitación se vieron partidos imposibles… y alguna siesta en el entretiempo.`,
+    success: `¿Creíste que Leo te escondía el regalo? 😂 Si apenas ordena su ropa. Estás más cerca… pero no acá.`,
   },
   {
     trail: '👑 Cuarto de los padres',
@@ -163,7 +163,7 @@ desde hace años, sin pedir nunca cambios.
         joke: '¿Se te hizo hambre? 😂 Aguanta que falta una sola pista. Casi casi, capitán.',
       },
     ],
-    success: `¡Parada 5! 👑 El vestuario del DT y su compañera. Los mejores cambios de este equipo salieron de esa habitación.`,
+    success: `¿Miraste debajo de la cama del DT? 🤣 Los campeones no esconden ahí. Aguanta una pista más, que ya casi estás.`,
   },
   {
     trail: '🎁 Tu cuarto',
@@ -320,6 +320,9 @@ export default function TreasureHunt({ onDone, onClose }: { onDone: () => void; 
               </p>
               <p className="font-display text-3xl tracking-wide text-amber-200 mt-2">¡ABRÍLO YA! 🎁⚽</p>
             </div>
+            <span className="rounded-full border border-emerald-300/30 bg-emerald-400/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-emerald-200">
+              📦 Regalos encontrados: 1/1 🏆
+            </span>
             <button
               onClick={onClose}
               className="rounded-full bg-gradient-to-r from-sky-400 to-blue-500 px-8 py-3 font-semibold text-white shadow-lg shadow-sky-500/25 transition-transform hover:scale-105 active:scale-95 cursor-pointer"
@@ -417,6 +420,11 @@ export default function TreasureHunt({ onDone, onClose }: { onDone: () => void; 
                   </p>
                   {!isLast && <p className="font-hand text-xl text-emerald-50 leading-snug mt-1">{current.success}</p>}
                 </div>
+                {!isLast && (
+                  <span className="shake rounded-full border border-amber-300/25 bg-amber-300/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-amber-200">
+                    📦 Regalos encontrados: 0/1 😏
+                  </span>
+                )}
                 <button
                   onClick={next}
                   className="rounded-full bg-gradient-to-r from-emerald-400 to-sky-500 px-8 py-3.5 font-semibold text-lg text-white shadow-lg shadow-emerald-500/25 transition-transform hover:scale-105 active:scale-95 cursor-pointer"
