@@ -122,10 +122,10 @@ el crack que todavía entrena la gambeta.
         joke: '¿El DT? Todavía no 😌 Falta un rato para ese vestuario. La pista habla de un jugador, no del técnico.',
       },
       {
-        emoji: '🎁',
-        label: 'La de tu hijo (la del tesoro)',
+        emoji: '🛏️',
+        label: 'La de tu hijo',
         correct: false,
-        joke: '¿Tanta prisa por el tesoro? 🤨 Ni loco, todavía faltan pistas. No hagás trampa, papá.',
+        joke: '¿La de tu hijo? 😏 Todavía no, faltan pistas. Y no, ahí tampoco está lo que buscás.',
       },
       {
         emoji: '🦁',
