@@ -108,70 +108,71 @@ pero nadie lo pone nunca en la formación.
     success: `Buen pase por el mediocampo… pero el regalo no corre por acá. (¿Ya miraste el baño otra vez? Es broma. No lo mires.)`,
   },
   {
-    trail: '🦁 Cuarto de Leo',
+    trail: '🦁 Habitación del enano',
     riddle: `Cuarta pista, se viene el clásico familiar:
-buscá el vestuario de tu otro hijo,
+buscá el vestuario del enano de la casa,
 el que comparte contigo partidos y tele,
 el crack que todavía entrena la gambeta.
 ¿De quién es la puerta?`,
     options: [
       {
         emoji: '🛏️',
-        label: 'La de tus padres',
+        label: 'Tu habitación',
         correct: false,
-        joke: '¿El DT? Todavía no 😌 Falta un rato para ese vestuario. La pista habla de un jugador, no del técnico.',
+        joke: '¿La tuya? 😌 Esa es la del DT. Acá buscamos al jugador más chico del plantel.',
       },
       {
-        emoji: '🛏️',
-        label: 'La de tu hijo',
+        emoji: '🚪',
+        label: 'La habitación del mayor',
         correct: false,
-        joke: '¿La de tu hijo? 😏 Todavía no, faltan pistas. Y no, ahí tampoco está lo que buscás.',
+        joke: '¿La del mayor? 😏 Todavía no. La pista habla del enano, no del mayor.',
       },
       {
         emoji: '🦁',
-        label: 'La habitación de Leo',
+        label: 'La habitación del enano',
         correct: true,
         joke: '',
       },
     ],
-    success: `¿Creíste que Leo te escondía el regalo? 😂 Si apenas ordena su ropa. Estás más cerca… pero no acá.`,
+    success: `¿Creíste que el enano te escondía el regalo? 😂 Si apenas ordena su ropa. Estás más cerca… pero no acá.`,
   },
   {
-    trail: '👑 Cuarto de los padres',
+    trail: '👑 Tu habitación',
     riddle: `Quinta pista, ya se huele la final:
-buscá el vestuario del director técnico,
-donde duerme el que maneja este equipo
-desde hace años, sin pedir nunca cambios.
+buscá el vestuario del director técnico.
+Sí, ese donde dormís vos,
+el que maneja este equipo desde hace años
+sin pedir nunca un cambio.
 ¿Adónde vas?`,
     options: [
       {
         emoji: '👑',
-        label: 'A la habitación de tus padres',
+        label: 'Tu habitación',
         correct: true,
         joke: '',
       },
       {
         emoji: '🚿',
-        label: 'Al otro baño',
+        label: 'El otro baño',
         correct: false,
         joke: '🟨 ¡Otra vez el baño! 🤣 Te prometo que el tesoro nunca estuvo ahí. (Lo revisé dos veces.)',
       },
       {
-        emoji: '🍽️',
-        label: 'A la cocina',
+        emoji: '🚪',
+        label: 'La habitación del mayor',
         correct: false,
-        joke: '¿Se te hizo hambre? 😂 Aguanta que falta una sola pista. Casi casi, capitán.',
+        joke: '¿La del mayor? 😏 Esa es la de tu hijo. Acá la pista habla de vos, capitán.',
       },
     ],
-    success: `¿Miraste debajo de la cama del DT? 🤣 Los campeones no esconden ahí. Aguanta una pista más, que ya casi estás.`,
+    success: `¿Miraste debajo de tu propia cama? 🤣 Los campeones no esconden ahí. Aguanta una pista más, que ya casi estás.`,
   },
   {
-    trail: '🎁 Tu cuarto',
+    trail: '🛏️ Habitación del mayor',
     riddle: `Última pista, la del campeonato:
-el tesoro está en la habitación
-de quien te hizo esta web.
-Dentro, el mueble donde la ropa
-hace la alineación cada semana.
+el tesoro está en la habitación del mayor,
+la de quien te hizo esta web.
+Ahí adentro te toca a vos, capitán:
+buscá donde la ropa hace la alineación.
 ¿Adónde corrés?`,
     options: [
       {
@@ -187,13 +188,13 @@ hace la alineación cada semana.
         joke: '¿Otra vez el sillón? 🤣 ¡Ya casi estás! No te enfríes ahora, capitán.',
       },
       {
-        emoji: '🎁',
-        label: '¡A la habitación de tu hijo!',
+        emoji: '🚪',
+        label: '¡A la habitación del mayor!',
         correct: true,
         joke: '',
       },
     ],
-    success: `¡ÚLTIMA PARADA! 🎁`,
+    success: `¡ÚLTIMA PARADA!`,
   },
 ]
 
@@ -216,7 +217,7 @@ function loadDone(): boolean {
 
 /**
  * La búsqueda del tesoro del capitán: 6 pistas en verso por toda la casa,
- * con caminos falsos al baño y un final épico en el armario.
+ * con caminos falsos al baño y un final que él mismo tiene que descubrir.
  */
 export default function TreasureHunt({ onDone, onClose }: { onDone: () => void; onClose: () => void }) {
   const [done, setDone] = useState(loadDone)
@@ -311,14 +312,17 @@ export default function TreasureHunt({ onDone, onClose }: { onDone: () => void; 
               ¡GOOOOOOL!
             </h2>
             <p className="font-hand text-2xl sm:text-3xl text-emerald-50 leading-snug">
-              Encontraste el tesoro del capitán.
+              Descifraste el tesoro del capitán.
             </p>
             <div className="rounded-2xl border border-amber-300/30 bg-amber-300/10 px-5 py-4">
               <p className="font-hand text-xl sm:text-2xl text-amber-100 leading-snug">
-                Está en el <strong className="underline decoration-amber-300/60">armario</strong> de la
-                habitación de tu hijo…
+                Está en la habitación del mayor…
+                <br />
+                y ahí adentro lo descubrís vos 😏
               </p>
-              <p className="font-display text-3xl tracking-wide text-amber-200 mt-2">¡ABRÍLO YA! 🎁⚽</p>
+              <p className="font-display text-3xl tracking-wide text-amber-200 mt-2">
+                ¡A BUSCARLO, CAPITÁN! ⚽
+              </p>
             </div>
             <span className="rounded-full border border-emerald-300/30 bg-emerald-400/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-emerald-200">
               📦 Regalos encontrados: 1/1 🏆
