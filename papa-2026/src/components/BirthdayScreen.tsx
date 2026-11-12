@@ -10,6 +10,11 @@ import { startMusic, toggleMusic } from '../music'
 
 const DEFAULT_LED = 'FELIZ CUMPLE PAPÁ ⚽ 12.11'
 
+/** La búsqueda del tesoro abre el 12/11 a las 21:30 (con ?preview se salta el bloqueo). */
+const HUNT_UNLOCK_AT = new Date(2026, 10, 12, 21, 30, 0).getTime()
+const PREVIEW = new URLSearchParams(window.location.search).has('preview')
+const huntIsOpen = () => PREVIEW || Date.now() >= HUNT_UNLOCK_AT
+
 const LETTER = `Papá:
 
 Hoy no hay clásico, ni copa, ni estadio lleno… pero igual es el día más grande del año: el día que llegó a esta cancha el mejor refuerzo de la familia. Vos.
@@ -98,6 +103,8 @@ export default function BirthdayScreen() {
   const [wish, setWish] = useState('')
   const [led, setLed] = useState({ text: DEFAULT_LED, k: 0 })
   const [huntOpen, setHuntOpen] = useState(false)
+  const [huntReady, setHuntReady] = useState(huntIsOpen)
+  const [huntLockedMsg, setHuntLockedMsg] = useState(false)
   const [huntDone, setHuntDone] = useState(() => {
     try {
       return localStorage.getItem('papa-hunt-done') === '1'
@@ -107,6 +114,31 @@ export default function BirthdayScreen() {
   })
   const musicStarted = useRef(false)
   const ledTimer = useRef<number | null>(null)
+
+  // si la app queda abierta, la búsqueda se destraba sola a la hora indicada
+  useEffect(() => {
+    if (huntReady) return
+    const ms = HUNT_UNLOCK_AT - Date.now()
+    if (ms <= 0) {
+      setHuntReady(true)
+      return
+    }
+    const t = window.setTimeout(() => {
+      setHuntReady(true)
+      fireBurst({ hearts: true, count: 24, y: window.innerHeight * 0.5 })
+    }, ms + 200)
+    return () => window.clearTimeout(t)
+  }, [huntReady])
+
+  const openHunt = () => {
+    if (!huntReady) {
+      setHuntLockedMsg(true)
+      window.setTimeout(() => setHuntLockedMsg(false), 3500)
+      return
+    }
+    setHuntOpen(true)
+    fireBurst({ hearts: true, count: 20, y: window.innerHeight * 0.5 })
+  }
 
   // celebración al entrar
   useEffect(() => {
@@ -266,20 +298,33 @@ export default function BirthdayScreen() {
       {/* búsqueda del tesoro */}
       <section className="card-enter w-full max-w-lg" style={{ animationDelay: '1s' }}>
         <button
-          onClick={() => {
-            setHuntOpen(true)
-            fireBurst({ hearts: true, count: 20, y: window.innerHeight * 0.5 })
-          }}
-          className="group w-full rounded-full bg-gradient-to-r from-amber-400 to-yellow-600 hover:from-amber-300 hover:to-yellow-500 px-8 py-4 font-semibold text-lg text-amber-950 shadow-xl shadow-amber-500/25 transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer"
+          onClick={openHunt}
+          aria-label="La búsqueda del tesoro"
+          className={
+            huntReady
+              ? 'group w-full rounded-full bg-gradient-to-r from-amber-400 to-yellow-600 hover:from-amber-300 hover:to-yellow-500 px-8 py-4 font-semibold text-lg text-amber-950 shadow-xl shadow-amber-500/25 transition-all duration-300 hover:scale-[1.03] active:scale-[0.98] cursor-pointer'
+              : 'group w-full rounded-full border border-amber-300/25 bg-amber-300/10 px-8 py-4 font-semibold text-lg text-amber-200/80 shadow-lg shadow-amber-500/10 backdrop-blur transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] cursor-pointer'
+          }
         >
           <span className="inline-flex items-center gap-2.5">
             <span className="text-xl transition-transform group-hover:-translate-y-0.5">🗺️</span>
-            {huntDone ? 'Tesoro encontrado 🏆' : 'La búsqueda del tesoro'}
+            {huntReady
+              ? huntDone
+                ? 'Tesoro encontrado 🏆'
+                : 'La búsqueda del tesoro'
+              : 'La búsqueda del tesoro 🔒'}
           </span>
         </button>
         <p className="mt-2.5 text-xs text-zinc-400">
-          (6 pistas por toda la casa… y ojo con las trampas 🟨)
+          {huntReady
+            ? '(6 pistas por toda la casa… y ojo con las trampas 🟨)'
+            : '(se abre hoy a las 21:30… paciencia, capitán 😏)'}
         </p>
+        {huntLockedMsg && (
+          <p className="card-enter mt-2 text-sm font-hand text-amber-200">
+            ⏳ Todavía no, capitán. La cancha abre a las 21:30 en punto.
+          </p>
+        )}
       </section>
 
       {/* figuritas */}
@@ -305,7 +350,7 @@ export default function BirthdayScreen() {
 
       {letterOpen && <Letter onClose={() => setLetterOpen(false)} />}
 
-      {huntOpen && (
+      {huntOpen && huntReady && (
         <TreasureHunt
           onDone={() => setHuntDone(true)}
           onClose={() => setHuntOpen(false)}
