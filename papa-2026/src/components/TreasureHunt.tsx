@@ -5,20 +5,18 @@ import { fireBurst } from '../effects'
 const STEP_KEY = 'papa-hunt-step'
 const DONE_KEY = 'papa-hunt-done'
 
-interface Trap {
-  match: string[]
+interface Opt {
+  emoji: string
+  /** nombre de fútbol, nunca el nombre real de la habitación */
+  label: string
+  correct: boolean
   joke: string
 }
 
 interface Step {
   trail: string
   riddle: string
-  /** respuestas válidas, ya normalizadas (sin acentos) */
-  keys: string[]
-  /** pifias con broma propia */
-  traps: Trap[]
-  /** mensaje del árbitro cuando no coincide con ninguna trampa */
-  hint: string
+  options: Opt[]
   success: string
 }
 
@@ -30,18 +28,26 @@ La primera parada es una cancha
 donde la heladera ataja el calor
 y el microondas saca el entretiempo.
 ¿Adónde vas?`,
-    keys: ['cocina', 'heladera', 'nevera', 'microondas'],
-    traps: [
+    options: [
       {
-        match: ['bano', 'banio', 'wc', 'ducha', 'inodoro'],
-        joke: '¿Ya querés ir al baño? 😂 Tranquilo, viejo, el partido recién arranca. Acá solo hay agua y jabón.',
+        emoji: '🥶',
+        label: 'La cancha del frío',
+        correct: true,
+        joke: '',
       },
       {
-        match: ['salon', 'sala', 'living', 'sofa', 'tele'],
+        emoji: '🛋️',
+        label: 'La cancha de la banca',
+        correct: false,
         joke: '¿A mirar la tele tan temprano? 😌 La pista habla de frío y entretiempo… pensá, pensá.',
       },
+      {
+        emoji: '🚿',
+        label: 'El vestuario húmedo',
+        correct: false,
+        joke: '¿Ya querés ir al baño? 😂 Tranquilo, viejo, el partido recién arranca. Acá solo hay agua y jabón.',
+      },
     ],
-    hint: '🟨 ¡Uy! Ahí no es, capitán. Releé la pista: habla de frío, heladera y entretiempo.',
     success: `¿Fuiste a la heladera pensando que el regalo estaba ahí? 😏 Frío, frío, papá. Acá solo hay comida. Regalo encontrado: ninguno.`,
   },
   {
@@ -51,18 +57,26 @@ la cancha donde la banca es un sofá,
 donde se gritan los goles por la tele
 y se celebra con control remoto en mano.
 ¿Adónde vas?`,
-    keys: ['salon', 'sala', 'living', 'sofa', 'tele'],
-    traps: [
+    options: [
       {
-        match: ['cocina', 'heladera', 'nevera', 'microondas'],
+        emoji: '🥶',
+        label: 'La cancha del frío',
+        correct: false,
         joke: '¿Otra vez a la cocina? 🤣 Ya revisaste esa cancha, capitán. Mirá la pista otra vez.',
       },
       {
-        match: ['habitacion', 'cuarto', 'pieza', 'dormitorio', 'cama'],
+        emoji: '🛋️',
+        label: 'La cancha de la banca',
+        correct: true,
+        joke: '',
+      },
+      {
+        emoji: '🛏️',
+        label: 'La cancha del descanso',
+        correct: false,
         joke: '¿A dormir? ¡Ni en tus sueños! 😂 La pista habla de sillones, no de sábanas.',
       },
     ],
-    hint: '🟨 Esa no era, crack. La pista habla de sofá, tele y control remoto.',
     success: `¿Levantaste los almohadones del sofá? 🤣 ¡No está! Igual vas haciendo un lindo recorrido, capitán.`,
   },
   {
@@ -72,18 +86,26 @@ es el que une todas las canchas de la casa,
 por él se corre cuando hay gol,
 pero nadie lo pone nunca en la formación.
 ¿Adónde vas?`,
-    keys: ['pasillo', 'corredor', 'hall'],
-    traps: [
+    options: [
       {
-        match: ['bano', 'banio', 'wc', 'ducha', 'inodoro'],
-        joke: '🟨 ¡Camaaon! 🤣 ¿Todo bien, papá? Acá solo hay agua y jabón. La pista habla del que UNE las habitaciones, no del que tira la cadena.',
-      },
-      {
-        match: ['cocina', 'heladera', 'nevera'],
+        emoji: '🥶',
+        label: 'La cancha del frío',
+        correct: false,
         joke: '¿Otra vez la cocina? 😂 Ya estuvo ahí, crack. Releé la pista: une todas las canchas…',
       },
+      {
+        emoji: '🚪',
+        label: 'El mediocampo de la casa',
+        correct: true,
+        joke: '',
+      },
+      {
+        emoji: '🚿',
+        label: 'El vestuario húmedo',
+        correct: false,
+        joke: '🟨 ¡Camaaon! 🤣 ¿Todo bien, papá? Acá solo hay agua y jabón. La pista habla del que UNE las habitaciones, no del que tira la cadena.',
+      },
     ],
-    hint: '🟨 ¡Casi! Pensá: es el que conecta todas las habitaciones de la casa…',
     success: `Buen pase por el mediocampo… pero el regalo no corre por acá. (¿Ya miraste el baño otra vez? Es broma. No lo mires.)`,
   },
   {
@@ -93,18 +115,26 @@ buscá el vestuario del más chico del plantel,
 el que comparte contigo partidos y tele,
 el crack que todavía entrena la gambeta.
 ¿De quién es la puerta?`,
-    keys: ['leo', 'enano', 'peque', 'chico', 'menor'],
-    traps: [
+    options: [
       {
-        match: ['mayor'],
+        emoji: '👑',
+        label: 'El vestuario del DT',
+        correct: false,
+        joke: '¿La tuya? 😌 Esa es la del DT. Acá buscamos al jugador más chico del plantel.',
+      },
+      {
+        emoji: '🦁',
+        label: 'El vestuario del pibe más chico',
+        correct: true,
+        joke: '',
+      },
+      {
+        emoji: '🛏️',
+        label: 'El vestuario del mayor',
+        correct: false,
         joke: '¿El mayor? 😏 Todavía no. La pista habla del más chico del plantel.',
       },
-      {
-        match: ['habitacion', 'cuarto', 'pieza', 'dormitorio'],
-        joke: '¿Esa puerta? 😏 No, capitán. Releé: buscamos al más chico del plantel.',
-      },
     ],
-    hint: '🟨 Esa puerta no, capitán. La pista habla del más chico de la casa.',
     success: `¿Creíste que el enano te escondía el regalo? 😂 Si apenas ordena su ropa. Estás más cerca… pero no acá.`,
   },
   {
@@ -115,30 +145,26 @@ Sí, ese donde dormís vos,
 el que maneja este equipo desde hace años
 sin pedir nunca un cambio.
 ¿Adónde vas?`,
-    keys: [
-      'tu habitacion',
-      'tu cuarto',
-      'tu pieza',
-      'tu dormitorio',
-      'mi habitacion',
-      'mi cuarto',
-      'mi pieza',
-      'la tuya',
-      'tus padres',
-      'tus viejos',
-      'padres',
-    ],
-    traps: [
+    options: [
       {
-        match: ['bano', 'banio', 'wc', 'ducha', 'inodoro'],
-        joke: '🟨 ¡Otra vez el baño! 🤣 Te prometo que el tesoro nunca estuvo ahí. (Lo revisé dos veces.)',
+        emoji: '🦁',
+        label: 'El vestuario del pibe más chico',
+        correct: false,
+        joke: '¿Otra vez la del enano? 😂 Ya pasaste por ahí, capitán. Acá la pista habla de vos.',
       },
       {
-        match: ['mayor'],
+        emoji: '🛏️',
+        label: 'El vestuario del mayor',
+        correct: false,
         joke: '¿La del mayor? 😏 Esa es la de tu hijo. Acá la pista habla de vos, capitán.',
       },
+      {
+        emoji: '👑',
+        label: 'El vestuario del DT',
+        correct: true,
+        joke: '',
+      },
     ],
-    hint: '🟨 Esa no es, DT. La pista dice que es donde dormís vos.',
     success: `¿Miraste debajo de tu propia cama? 🤣 Los campeones no esconden ahí. Aguanta una pista más, que ya casi estás.`,
   },
   {
@@ -150,32 +176,29 @@ el que te hizo esta web.
 Ahí adentro te toca a vos, capitán:
 buscá donde la ropa hace la alineación.
 ¿Adónde corrés?`,
-    keys: ['mayor', 'hijo mayor', 'tu hijo', 'hijo'],
-    traps: [
+    options: [
       {
-        match: ['bano', 'banio', 'wc', 'ducha', 'inodoro'],
+        emoji: '🦁',
+        label: 'El vestuario del pibe más chico',
+        correct: false,
+        joke: '¿Otra vez la del enano? 🤣 ¡Ya casi estás! No te enfríes ahora, capitán.',
+      },
+      {
+        emoji: '🚿',
+        label: 'El vestuario húmedo',
+        correct: false,
         joke: 'PAPÁ. 😂 Si volvés a mirar dentro del baño te saco tarjeta roja y te expulso del cumple.',
       },
       {
-        match: ['salon', 'sala', 'living', 'sofa', 'tele'],
-        joke: '¿Otra vez el sillón? 🤣 ¡Ya casi estás! No te enfríes ahora, capitán.',
+        emoji: '🛏️',
+        label: 'El vestuario del mayor',
+        correct: true,
+        joke: '',
       },
     ],
-    hint: '🟨 Casi, capitán. La pista habla del mayor de los dos pibes de la casa…',
     success: `¡ÚLTIMA PARADA!`,
   },
 ]
-
-/** minúsculas, sin acentos ni signos, para comparar lo que escribe */
-function norm(s: string): string {
-  return s
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9 ]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-}
 
 function loadStep(): number {
   try {
@@ -204,7 +227,6 @@ export default function TreasureHunt({ onDone, onClose }: { onDone: () => void; 
   const [started, setStarted] = useState(() => loadStep() > 0)
   const [wrong, setWrong] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
-  const [answer, setAnswer] = useState('')
 
   const current = STEPS[step]
   const isLast = step === STEPS.length - 1
@@ -225,22 +247,15 @@ export default function TreasureHunt({ onDone, onClose }: { onDone: () => void; 
     }
   }, [done])
 
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (success) return
-    const n = norm(answer)
-    if (!n) return
-    if (current.keys.some((k) => n.includes(k))) {
+  const pick = (opt: Opt, e: React.MouseEvent<HTMLButtonElement>) => {
+    if (opt.correct) {
       setWrong(null)
       setSuccess(true)
-      setAnswer('')
-      fireBurst({ hearts: true, count: 24, y: window.innerHeight * 0.45 })
-      fireBurst({ count: 45, y: window.innerHeight * 0.4 })
+      fireBurst({ x: e.clientX, y: e.clientY, hearts: true, count: 24 })
+      fireBurst({ x: e.clientX, y: e.clientY, count: 45 })
     } else {
-      const trap = current.traps.find((t) => t.match.some((m) => n.includes(m)))
-      setWrong(trap ? trap.joke : current.hint)
-      setAnswer('')
-      fireBurst({ tiny: true, count: 12, y: window.innerHeight * 0.4 })
+      setWrong(opt.joke)
+      fireBurst({ x: e.clientX, y: e.clientY, tiny: true, count: 12 })
     }
   }
 
@@ -335,7 +350,7 @@ export default function TreasureHunt({ onDone, onClose }: { onDone: () => void; 
               <br />
               Leé cada pista, andá al lugar que creas
               <br />
-              y escribí adónde llegaste.
+              y tocá la opción que más pegue.
               <br />
               Si la embocás, seguís. Si no… 🟨
             </p>
@@ -426,31 +441,23 @@ export default function TreasureHunt({ onDone, onClose }: { onDone: () => void; 
                 </button>
               </div>
             ) : (
-              /* respuesta libre: él tiene que adivinar el lugar */
-              <form onSubmit={submit} className="flex w-full flex-col gap-2.5">
-                <div className="flex w-full items-center gap-2">
-                  <input
-                    value={answer}
-                    onChange={(e) => setAnswer(e.target.value)}
-                    placeholder="escribí el lugar…"
-                    aria-label="Escribí el lugar"
-                    autoComplete="off"
-                    autoCapitalize="off"
-                    spellCheck={false}
-                    maxLength={40}
-                    className="min-w-0 flex-1 rounded-2xl border border-white/15 bg-white/10 px-5 py-3.5 font-hand text-xl text-zinc-100 placeholder:text-zinc-500 outline-none focus:border-sky-300/40"
-                  />
+              /* opciones: estilo test, sin nombres de habitaciones */
+              <div className="flex w-full flex-col gap-2.5">
+                {current.options.map((opt, i) => (
                   <button
-                    type="submit"
-                    className="shrink-0 rounded-2xl bg-gradient-to-r from-emerald-400 to-sky-500 px-5 py-3.5 font-semibold text-white shadow-lg shadow-emerald-500/20 transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+                    key={i}
+                    onClick={(e) => pick(opt, e)}
+                    aria-label={opt.label}
+                    className="flex w-full items-center gap-3 rounded-2xl border border-white/12 bg-white/5 px-5 py-3.5 text-left transition-all duration-200 hover:border-sky-300/40 hover:bg-sky-400/10 hover:translate-x-1 cursor-pointer"
                   >
-                    ¡Acá estoy!
+                    <span className="text-2xl leading-none select-none">{opt.emoji}</span>
+                    <span className="font-semibold text-zinc-100">{opt.label}</span>
                   </button>
-                </div>
-                <p className="text-[11px] text-emerald-200/50">
-                  escribí adónde fuiste (el árbitro decide 🟨)
+                ))}
+                <p className="text-[11px] text-emerald-200/50 mt-0.5">
+                  tocá la opción que la pista te dicta (y ojo con el árbitro 🟨)
                 </p>
-              </form>
+              </div>
             )}
           </div>
         )}
