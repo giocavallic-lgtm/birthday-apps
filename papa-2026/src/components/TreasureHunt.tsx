@@ -5,17 +5,20 @@ import { fireBurst } from '../effects'
 const STEP_KEY = 'papa-hunt-step'
 const DONE_KEY = 'papa-hunt-done'
 
-interface Opt {
-  emoji: string
-  label: string
-  correct: boolean
+interface Trap {
+  match: string[]
   joke: string
 }
 
 interface Step {
   trail: string
   riddle: string
-  options: Opt[]
+  /** respuestas válidas, ya normalizadas (sin acentos) */
+  keys: string[]
+  /** pifias con broma propia */
+  traps: Trap[]
+  /** mensaje del árbitro cuando no coincide con ninguna trampa */
+  hint: string
   success: string
 }
 
@@ -27,26 +30,18 @@ La primera parada es una cancha
 donde la heladera ataja el calor
 y el microondas saca el entretiempo.
 ¿Adónde vas?`,
-    options: [
+    keys: ['cocina', 'heladera', 'nevera', 'microondas'],
+    traps: [
       {
-        emoji: '🍳',
-        label: 'A la cocina',
-        correct: true,
-        joke: '',
-      },
-      {
-        emoji: '🚿',
-        label: 'Al baño',
-        correct: false,
+        match: ['bano', 'banio', 'wc', 'ducha', 'inodoro'],
         joke: '¿Ya querés ir al baño? 😂 Tranquilo, viejo, el partido recién arranca. Acá solo hay agua y jabón.',
       },
       {
-        emoji: '🛋️',
-        label: 'Al salón',
-        correct: false,
+        match: ['salon', 'sala', 'living', 'sofa', 'tele'],
         joke: '¿A mirar la tele tan temprano? 😌 La pista habla de frío y entretiempo… pensá, pensá.',
       },
     ],
+    hint: '🟨 ¡Uy! Ahí no es, capitán. Releé la pista: habla de frío, heladera y entretiempo.',
     success: `¿Fuiste a la heladera pensando que el regalo estaba ahí? 😏 Frío, frío, papá. Acá solo hay comida. Regalo encontrado: ninguno.`,
   },
   {
@@ -56,26 +51,18 @@ la cancha donde la banca es un sofá,
 donde se gritan los goles por la tele
 y se celebra con control remoto en mano.
 ¿Adónde vas?`,
-    options: [
+    keys: ['salon', 'sala', 'living', 'sofa', 'tele'],
+    traps: [
       {
-        emoji: '🍳',
-        label: 'A la cocina',
-        correct: false,
+        match: ['cocina', 'heladera', 'nevera', 'microondas'],
         joke: '¿Otra vez a la cocina? 🤣 Ya revisaste esa cancha, capitán. Mirá la pista otra vez.',
       },
       {
-        emoji: '🛋️',
-        label: 'Al salón',
-        correct: true,
-        joke: '',
-      },
-      {
-        emoji: '🛏️',
-        label: 'A tu habitación',
-        correct: false,
+        match: ['habitacion', 'cuarto', 'pieza', 'dormitorio', 'cama'],
         joke: '¿A dormir? ¡Ni en tus sueños! 😂 La pista habla de sillones, no de sábanas.',
       },
     ],
+    hint: '🟨 Esa no era, crack. La pista habla de sofá, tele y control remoto.',
     success: `¿Levantaste los almohadones del sofá? 🤣 ¡No está! Igual vas haciendo un lindo recorrido, capitán.`,
   },
   {
@@ -85,55 +72,39 @@ es el que une todas las canchas de la casa,
 por él se corre cuando hay gol,
 pero nadie lo pone nunca en la formación.
 ¿Adónde vas?`,
-    options: [
+    keys: ['pasillo', 'corredor', 'hall'],
+    traps: [
       {
-        emoji: '🚿',
-        label: 'Al baño',
-        correct: false,
+        match: ['bano', 'banio', 'wc', 'ducha', 'inodoro'],
         joke: '🟨 ¡Camaaon! 🤣 ¿Todo bien, papá? Acá solo hay agua y jabón. La pista habla del que UNE las habitaciones, no del que tira la cadena.',
       },
       {
-        emoji: '🍳',
-        label: 'A la cocina',
-        correct: false,
+        match: ['cocina', 'heladera', 'nevera'],
         joke: '¿Otra vez la cocina? 😂 Ya estuvo ahí, crack. Releé la pista: une todas las canchas…',
       },
-      {
-        emoji: '🚪',
-        label: 'Al pasillo',
-        correct: true,
-        joke: '',
-      },
     ],
+    hint: '🟨 ¡Casi! Pensá: es el que conecta todas las habitaciones de la casa…',
     success: `Buen pase por el mediocampo… pero el regalo no corre por acá. (¿Ya miraste el baño otra vez? Es broma. No lo mires.)`,
   },
   {
     trail: '🦁 Habitación del enano',
     riddle: `Cuarta pista, se viene el clásico familiar:
-buscá el vestuario del enano de la casa,
+buscá el vestuario del más chico del plantel,
 el que comparte contigo partidos y tele,
 el crack que todavía entrena la gambeta.
 ¿De quién es la puerta?`,
-    options: [
+    keys: ['leo', 'enano', 'peque', 'chico', 'menor'],
+    traps: [
       {
-        emoji: '🛏️',
-        label: 'Tu habitación',
-        correct: false,
-        joke: '¿La tuya? 😌 Esa es la del DT. Acá buscamos al jugador más chico del plantel.',
+        match: ['mayor'],
+        joke: '¿El mayor? 😏 Todavía no. La pista habla del más chico del plantel.',
       },
       {
-        emoji: '🚪',
-        label: 'La habitación del mayor',
-        correct: false,
-        joke: '¿La del mayor? 😏 Todavía no. La pista habla del enano, no del mayor.',
-      },
-      {
-        emoji: '🦁',
-        label: 'La habitación del enano',
-        correct: true,
-        joke: '',
+        match: ['habitacion', 'cuarto', 'pieza', 'dormitorio'],
+        joke: '¿Esa puerta? 😏 No, capitán. Releé: buscamos al más chico del plantel.',
       },
     ],
+    hint: '🟨 Esa puerta no, capitán. La pista habla del más chico de la casa.',
     success: `¿Creíste que el enano te escondía el regalo? 😂 Si apenas ordena su ropa. Estás más cerca… pero no acá.`,
   },
   {
@@ -144,59 +115,67 @@ Sí, ese donde dormís vos,
 el que maneja este equipo desde hace años
 sin pedir nunca un cambio.
 ¿Adónde vas?`,
-    options: [
+    keys: [
+      'tu habitacion',
+      'tu cuarto',
+      'tu pieza',
+      'tu dormitorio',
+      'mi habitacion',
+      'mi cuarto',
+      'mi pieza',
+      'la tuya',
+      'tus padres',
+      'tus viejos',
+      'padres',
+    ],
+    traps: [
       {
-        emoji: '👑',
-        label: 'Tu habitación',
-        correct: true,
-        joke: '',
-      },
-      {
-        emoji: '🚿',
-        label: 'El otro baño',
-        correct: false,
+        match: ['bano', 'banio', 'wc', 'ducha', 'inodoro'],
         joke: '🟨 ¡Otra vez el baño! 🤣 Te prometo que el tesoro nunca estuvo ahí. (Lo revisé dos veces.)',
       },
       {
-        emoji: '🚪',
-        label: 'La habitación del mayor',
-        correct: false,
+        match: ['mayor'],
         joke: '¿La del mayor? 😏 Esa es la de tu hijo. Acá la pista habla de vos, capitán.',
       },
     ],
+    hint: '🟨 Esa no es, DT. La pista dice que es donde dormís vos.',
     success: `¿Miraste debajo de tu propia cama? 🤣 Los campeones no esconden ahí. Aguanta una pista más, que ya casi estás.`,
   },
   {
     trail: '🛏️ Habitación del mayor',
     riddle: `Última pista, la del campeonato:
-el tesoro está en la habitación del mayor,
-la de quien te hizo esta web.
+el escondite está en el vestuario
+del mayor de los dos pibes de esta casa,
+el que te hizo esta web.
 Ahí adentro te toca a vos, capitán:
 buscá donde la ropa hace la alineación.
 ¿Adónde corrés?`,
-    options: [
+    keys: ['mayor', 'hijo mayor', 'tu hijo', 'hijo'],
+    traps: [
       {
-        emoji: '🚿',
-        label: 'Al baño (por si acaso)',
-        correct: false,
+        match: ['bano', 'banio', 'wc', 'ducha', 'inodoro'],
         joke: 'PAPÁ. 😂 Si volvés a mirar dentro del baño te saco tarjeta roja y te expulso del cumple.',
       },
       {
-        emoji: '🛋️',
-        label: 'Al salón',
-        correct: false,
+        match: ['salon', 'sala', 'living', 'sofa', 'tele'],
         joke: '¿Otra vez el sillón? 🤣 ¡Ya casi estás! No te enfríes ahora, capitán.',
       },
-      {
-        emoji: '🚪',
-        label: '¡A la habitación del mayor!',
-        correct: true,
-        joke: '',
-      },
     ],
+    hint: '🟨 Casi, capitán. La pista habla del mayor de los dos pibes de la casa…',
     success: `¡ÚLTIMA PARADA!`,
   },
 ]
+
+/** minúsculas, sin acentos ni signos, para comparar lo que escribe */
+function norm(s: string): string {
+  return s
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9 ]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
 
 function loadStep(): number {
   try {
@@ -225,6 +204,7 @@ export default function TreasureHunt({ onDone, onClose }: { onDone: () => void; 
   const [started, setStarted] = useState(() => loadStep() > 0)
   const [wrong, setWrong] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+  const [answer, setAnswer] = useState('')
 
   const current = STEPS[step]
   const isLast = step === STEPS.length - 1
@@ -245,15 +225,22 @@ export default function TreasureHunt({ onDone, onClose }: { onDone: () => void; 
     }
   }, [done])
 
-  const pick = (opt: Opt, e: React.MouseEvent<HTMLButtonElement>) => {
-    if (opt.correct) {
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (success) return
+    const n = norm(answer)
+    if (!n) return
+    if (current.keys.some((k) => n.includes(k))) {
       setWrong(null)
       setSuccess(true)
-      fireBurst({ x: e.clientX, y: e.clientY, hearts: true, count: 24 })
-      fireBurst({ x: e.clientX, y: e.clientY, count: 45 })
+      setAnswer('')
+      fireBurst({ hearts: true, count: 24, y: window.innerHeight * 0.45 })
+      fireBurst({ count: 45, y: window.innerHeight * 0.4 })
     } else {
-      setWrong(opt.joke)
-      fireBurst({ x: e.clientX, y: e.clientY, tiny: true, count: 12 })
+      const trap = current.traps.find((t) => t.match.some((m) => n.includes(m)))
+      setWrong(trap ? trap.joke : current.hint)
+      setAnswer('')
+      fireBurst({ tiny: true, count: 12, y: window.innerHeight * 0.4 })
     }
   }
 
@@ -316,7 +303,7 @@ export default function TreasureHunt({ onDone, onClose }: { onDone: () => void; 
             </p>
             <div className="rounded-2xl border border-amber-300/30 bg-amber-300/10 px-5 py-4">
               <p className="font-hand text-xl sm:text-2xl text-amber-100 leading-snug">
-                Está en la habitación del mayor…
+                Está donde ya sabés…
                 <br />
                 y ahí adentro lo descubrís vos 😏
               </p>
@@ -346,9 +333,11 @@ export default function TreasureHunt({ onDone, onClose }: { onDone: () => void; 
             <p className="font-hand text-2xl text-emerald-100/90 leading-snug">
               Hay un tesoro escondido en esta casa.
               <br />
-              Leé cada pista, andá al lugar que dice
+              Leé cada pista, andá al lugar que creas
               <br />
-              y tocá adónde llegaste.
+              y escribí adónde llegaste.
+              <br />
+              Si la embocás, seguís. Si no… 🟨
             </p>
             <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-semibold uppercase tracking-widest">
               <span className="rounded-full border border-sky-300/25 bg-sky-400/10 px-3 py-1.5 text-sky-200">6 pistas</span>
@@ -437,23 +426,31 @@ export default function TreasureHunt({ onDone, onClose }: { onDone: () => void; 
                 </button>
               </div>
             ) : (
-              /* opciones */
-              <div className="flex w-full flex-col gap-2.5">
-                {current.options.map((opt, i) => (
+              /* respuesta libre: él tiene que adivinar el lugar */
+              <form onSubmit={submit} className="flex w-full flex-col gap-2.5">
+                <div className="flex w-full items-center gap-2">
+                  <input
+                    value={answer}
+                    onChange={(e) => setAnswer(e.target.value)}
+                    placeholder="escribí el lugar…"
+                    aria-label="Escribí el lugar"
+                    autoComplete="off"
+                    autoCapitalize="off"
+                    spellCheck={false}
+                    maxLength={40}
+                    className="min-w-0 flex-1 rounded-2xl border border-white/15 bg-white/10 px-5 py-3.5 font-hand text-xl text-zinc-100 placeholder:text-zinc-500 outline-none focus:border-sky-300/40"
+                  />
                   <button
-                    key={i}
-                    onClick={(e) => pick(opt, e)}
-                    aria-label={opt.label}
-                    className="flex w-full items-center gap-3 rounded-2xl border border-white/12 bg-white/5 px-5 py-3.5 text-left transition-all duration-200 hover:border-sky-300/40 hover:bg-sky-400/10 hover:translate-x-1 cursor-pointer"
+                    type="submit"
+                    className="shrink-0 rounded-2xl bg-gradient-to-r from-emerald-400 to-sky-500 px-5 py-3.5 font-semibold text-white shadow-lg shadow-emerald-500/20 transition-transform hover:scale-105 active:scale-95 cursor-pointer"
                   >
-                    <span className="text-2xl leading-none select-none">{opt.emoji}</span>
-                    <span className="font-semibold text-zinc-100">{opt.label}</span>
+                    ¡Acá estoy!
                   </button>
-                ))}
-                <p className="text-[11px] text-emerald-200/50 mt-0.5">
-                  tocá el lugar adonde fuiste (y ojo con el árbitro 🟨)
+                </div>
+                <p className="text-[11px] text-emerald-200/50">
+                  escribí adónde fuiste (el árbitro decide 🟨)
                 </p>
-              </div>
+              </form>
             )}
           </div>
         )}
