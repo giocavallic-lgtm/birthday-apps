@@ -30,20 +30,20 @@ y el microondas saca el entretiempo.
 ¿Adónde vas?`,
     options: [
       {
-        emoji: '🥶',
-        label: 'La cancha del frío',
+        emoji: '🍳',
+        label: 'La cocina',
         correct: true,
         joke: '',
       },
       {
         emoji: '🛋️',
-        label: 'La cancha de la banca',
+        label: 'El salón',
         correct: false,
         joke: '¿A mirar la tele tan temprano? 😌 La pista habla de frío y entretiempo… pensá, pensá.',
       },
       {
         emoji: '🚿',
-        label: 'El vestuario húmedo',
+        label: 'El baño',
         correct: false,
         joke: '¿Ya querés ir al baño? 😂 Tranquilo, viejo, el partido recién arranca. Acá solo hay agua y jabón.',
       },
@@ -59,20 +59,20 @@ y se celebra con control remoto en mano.
 ¿Adónde vas?`,
     options: [
       {
-        emoji: '🥶',
-        label: 'La cancha del frío',
+        emoji: '🍳',
+        label: 'La cocina',
         correct: false,
         joke: '¿Otra vez a la cocina? 🤣 Ya revisaste esa cancha, capitán. Mirá la pista otra vez.',
       },
       {
         emoji: '🛋️',
-        label: 'La cancha de la banca',
+        label: 'El salón',
         correct: true,
         joke: '',
       },
       {
         emoji: '🛏️',
-        label: 'La cancha del descanso',
+        label: 'Tu habitación',
         correct: false,
         joke: '¿A dormir? ¡Ni en tus sueños! 😂 La pista habla de sillones, no de sábanas.',
       },
@@ -88,22 +88,22 @@ pero nadie lo pone nunca en la formación.
 ¿Adónde vas?`,
     options: [
       {
-        emoji: '🥶',
-        label: 'La cancha del frío',
+        emoji: '🚿',
+        label: 'El baño',
+        correct: false,
+        joke: '🟨 ¡Camaaon! 🤣 ¿Todo bien, papá? Acá solo hay agua y jabón. La pista habla del que UNE las habitaciones, no del que tira la cadena.',
+      },
+      {
+        emoji: '🍳',
+        label: 'La cocina',
         correct: false,
         joke: '¿Otra vez la cocina? 😂 Ya estuvo ahí, crack. Releé la pista: une todas las canchas…',
       },
       {
         emoji: '🚪',
-        label: 'El mediocampo de la casa',
+        label: 'El pasillo',
         correct: true,
         joke: '',
-      },
-      {
-        emoji: '🚿',
-        label: 'El vestuario húmedo',
-        correct: false,
-        joke: '🟨 ¡Camaaon! 🤣 ¿Todo bien, papá? Acá solo hay agua y jabón. La pista habla del que UNE las habitaciones, no del que tira la cadena.',
       },
     ],
     success: `Buen pase por el mediocampo… pero el regalo no corre por acá. (¿Ya miraste el baño otra vez? Es broma. No lo mires.)`,
@@ -118,21 +118,21 @@ el crack que todavía entrena la gambeta.
     options: [
       {
         emoji: '👑',
-        label: 'El vestuario del DT',
+        label: 'Tu habitación',
         correct: false,
-        joke: '¿La tuya? 😌 Esa es la del DT. Acá buscamos al jugador más chico del plantel.',
+        joke: '¿La tuya? 😌 Esa es la del DT, capitán. Acá buscamos la del más chico del plantel.',
       },
       {
         emoji: '🦁',
-        label: 'El vestuario del pibe más chico',
+        label: 'La habitación del enano',
         correct: true,
         joke: '',
       },
       {
         emoji: '🛏️',
-        label: 'El vestuario del mayor',
+        label: 'La habitación del mayor',
         correct: false,
-        joke: '¿El mayor? 😏 Todavía no. La pista habla del más chico del plantel.',
+        joke: '¿La del mayor? 😏 Todavía no. La pista habla del enano, no del mayor.',
       },
     ],
     success: `¿Creíste que el enano te escondía el regalo? 😂 Si apenas ordena su ropa. Estás más cerca… pero no acá.`,
@@ -148,19 +148,19 @@ sin pedir nunca un cambio.
     options: [
       {
         emoji: '🦁',
-        label: 'El vestuario del pibe más chico',
+        label: 'La habitación del enano',
         correct: false,
         joke: '¿Otra vez la del enano? 😂 Ya pasaste por ahí, capitán. Acá la pista habla de vos.',
       },
       {
         emoji: '🛏️',
-        label: 'El vestuario del mayor',
+        label: 'La habitación del mayor',
         correct: false,
         joke: '¿La del mayor? 😏 Esa es la de tu hijo. Acá la pista habla de vos, capitán.',
       },
       {
         emoji: '👑',
-        label: 'El vestuario del DT',
+        label: 'Tu habitación',
         correct: true,
         joke: '',
       },
@@ -179,19 +179,19 @@ buscá donde la ropa hace la alineación.
     options: [
       {
         emoji: '🦁',
-        label: 'El vestuario del pibe más chico',
+        label: 'La habitación del enano',
         correct: false,
         joke: '¿Otra vez la del enano? 🤣 ¡Ya casi estás! No te enfríes ahora, capitán.',
       },
       {
         emoji: '🚿',
-        label: 'El vestuario húmedo',
+        label: 'El baño',
         correct: false,
         joke: 'PAPÁ. 😂 Si volvés a mirar dentro del baño te saco tarjeta roja y te expulso del cumple.',
       },
       {
         emoji: '🛏️',
-        label: 'El vestuario del mayor',
+        label: 'La habitación del mayor',
         correct: true,
         joke: '',
       },
